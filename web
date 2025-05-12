@@ -94,7 +94,7 @@
     (function() {
       const basePrice = 100;
 
-      function getSelectedRadioValue(name) {
+      function getValue(name) {
         const radios = document.getElementsByName(name);
         for (let r of radios) {
           if (r.checked) return parseFloat(r.value);
@@ -106,12 +106,12 @@
         let price = basePrice;
 
         const eduCoef = parseFloat(document.getElementById('education').value);
-        price *= eduCoef; // comparison & variable
+        price *= eduCoef; 
 
         const netCoef = parseFloat(document.getElementById('networth').value);
         price *= netCoef;
 
-        const ageCoef = getSelectedRadioValue('age');
+        const ageCoef = getValue('age');
         price *= ageCoef;
 
         const repCoefs = Array.from(document.querySelectorAll('.rep-coef'))
@@ -141,10 +141,10 @@
 
       function updateResult(amount) {
         const res = document.getElementById('result');
-        res.textContent = `💰 Final Price: $${amount}`;           // textContent
-        res.style.backgroundColor = '#f0f8ff';                    // CSS change
-        res.style.border = '2px solid #008cba';                   // CSS change
-        res.style.padding = '1em';                                // CSS change
+        res.textContent = `💰 Final Price: $${amount}`;           
+        res.style.backgroundColor = '#f0f8ff';                    
+        res.style.border = '2px solid #008cba';                   
+        res.style.padding = '1em';                                
       }
 
       document.getElementById('calculateBtn')
