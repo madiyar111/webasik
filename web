@@ -91,11 +91,9 @@
   <div id="result">Your price will appear here.</div>
 
   <script>
-    // Wrap everything in an IIFE to avoid global leaking
     (function() {
       const basePrice = 100;
 
-      // Utility: read selected radio by name
       function getSelectedRadioValue(name) {
         const radios = document.getElementsByName(name);
         for (let r of radios) {
@@ -104,55 +102,43 @@
         return 1;
       }
 
-      // Main calculation
       function calculatePrice() {
         let price = basePrice;
 
-        // 1. Education × coefficient
         const eduCoef = parseFloat(document.getElementById('education').value);
         price *= eduCoef; // comparison & variable
 
-        // 2. Net worth × coefficient
         const netCoef = parseFloat(document.getElementById('networth').value);
         price *= netCoef;
 
-        // 5. Age × coefficient (doing out of order to illustrate logical ops)
         const ageCoef = getSelectedRadioValue('age');
         price *= ageCoef;
 
-        // 6. Reputation: coefficients (multiplicative) & flat
-        // Use arrays and objects
         const repCoefs = Array.from(document.querySelectorAll('.rep-coef'))
           .filter(cb => cb.checked)
           .map(cb => parseFloat(cb.value));
-        // apply each coefficient only if gossip checkboxes are checked
         repCoefs.forEach(c => price *= c);
 
         const repFlats = Array.from(document.querySelectorAll('.rep-flat'))
           .filter(cb => cb.checked)
           .map(cb => parseFloat(cb.value));
-        // sum all flat deductions
         const flatDeduction = repFlats.reduce((sum, v) => sum + v, 0);
         price += flatDeduction;
 
-        // 3. Caste addition
         const casteAdd = parseFloat(document.getElementById('caste').value);
         price += casteAdd;
 
-        // 4. Skills sum
         const skillSum = Array.from(document.querySelectorAll('.skill'))
           .filter(cb => cb.checked)
           .map(cb => parseFloat(cb.value))
           .reduce((sum, v) => sum + v, 0);
         price += skillSum;
 
-        // Round to 2 decimals
         price = Math.round(price * 100) / 100;
 
         updateResult(price);
       }
 
-      // DOM manipulations (at least 3) + 1 CSS modification
       function updateResult(amount) {
         const res = document.getElementById('result');
         res.textContent = `💰 Final Price: $${amount}`;           // textContent
@@ -161,7 +147,6 @@
         res.style.padding = '1em';                                // CSS change
       }
 
-      // 1 Event: click
       document.getElementById('calculateBtn')
         .addEventListener('click', calculatePrice);
     })();
